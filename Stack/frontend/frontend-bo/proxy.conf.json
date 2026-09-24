@@ -1,0 +1,12 @@
+{
+  "/auth": { "target": "http://127.0.0.1:8051", "secure": false, "changeOrigin": true },
+  "/api/mensajes": { "target": "http://127.0.0.1:8056", "secure": false, "changeOrigin": true },
+  "/api/conducta": { "target": "http://127.0.0.1:8055", "secure": false, "changeOrigin": true },
+  "/api/asistencia": { "target": "http://127.0.0.1:8054", "secure": false, "changeOrigin": true },
+  "/api/academico": { "target": "http://127.0.0.1:8053", "secure": false, "changeOrigin": true },
+  "/api/admin": { "target": "http://127.0.0.1:8052", "secure": false, "changeOrigin": true },
+  "/api/apoderados": { "target": "http://127.0.0.1:8052", "secure": false, "changeOrigin": true },
+  "/api/alumnos": { "target": "http://127.0.0.1:8052", "secure": false, "changeOrigin": true },
+  "/api/docentes": { "target": "http://127.0.0.1:8052", "secure": false, "changeOrigin": true },
+  "/api/permisos": { "target": "http://127.0.0.1:8052", "secure": false, "changeOrigin": true }
+}

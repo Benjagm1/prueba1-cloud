@@ -1,0 +1,15 @@
+@import '../profesor/profesor.css';
+
+.alumno-theme {
+  --warning-yellow: #0d6efd;
+}
+
+.alumno-theme .brand-icon {
+  background-color: #0d6efd;
+}
+
+.alumno-theme .stat-icon svg {
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+}

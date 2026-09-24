@@ -1,0 +1,19 @@
+.horario-semana {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.dia-card.dia-hoy {
+  border-color: #cbd5e1;
+  box-shadow: 0 0 0 1px #e2e8f0;
+}
+
+.badge-hoy {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 50px;
+  background: var(--sidebar-bg, #1e293b);
+  color: white;
+}

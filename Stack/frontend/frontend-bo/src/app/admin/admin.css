@@ -1,0 +1,18 @@
+@import '../profesor/profesor.css';
+
+.admin-theme {
+  --warning-yellow: #7c3aed;
+}
+
+.admin-theme .brand-icon {
+  background-color: #7c3aed;
+  color: #fff;
+}
+
+.admin-theme .sidebar {
+  --sidebar-bg: #1e1b4b;
+}
+
+.admin-theme .menu-item.active {
+  background-color: rgba(124, 58, 237, 0.25);
+}

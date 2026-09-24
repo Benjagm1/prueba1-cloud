@@ -1,0 +1,86 @@
+<div class="view-container fade-in">
+  <div class="page-header">
+    <h2>Mensajes</h2>
+    <p>Comuníquese con los docentes de sus pupilos</p>
+  </div>
+
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+  @if (exito()) {
+    <p style="color:#059669;margin-bottom:1rem;font-weight:600;">{{ exito() }}</p>
+  }
+
+  <div class="main-grid" style="margin-top: 1rem;">
+    <div class="content-card">
+      <div class="card-header">
+        <h4>Redactar mensaje</h4>
+      </div>
+      <div class="field" style="margin-bottom: 1rem;">
+        <label for="dest">Docente</label>
+        <select id="dest" [(ngModel)]="destId" name="dest" style="width:100%;padding:0.5rem;">
+          <option [ngValue]="null">Seleccione docente…</option>
+          @for (c of contactos(); track c.usuarioId) {
+            <option [ngValue]="c.usuarioId">{{ etiquetaContacto(c) }}</option>
+          }
+        </select>
+      </div>
+      <div class="field" style="margin-bottom: 1rem;">
+        <label for="asunto">Asunto</label>
+        <input id="asunto" [(ngModel)]="asunto" name="asunto" style="width:100%;padding:0.5rem;" />
+      </div>
+      <div class="field" style="margin-bottom: 1rem;">
+        <label for="cuerpo">Mensaje</label>
+        <textarea id="cuerpo" rows="4" [(ngModel)]="cuerpo" name="cuerpo" style="width:100%;padding:0.5rem;"></textarea>
+      </div>
+      <button type="button" class="btn-primary" (click)="enviar()" [disabled]="enviando() || destId == null || !cuerpo.trim()">
+        {{ enviando() ? 'Enviando…' : 'Enviar mensaje' }}
+      </button>
+    </div>
+
+    <div class="content-card">
+      <div class="card-header">
+        <h4>Notificaciones</h4>
+        <button type="button" class="link-action" (click)="reload()">Actualizar</button>
+      </div>
+      @if (notificaciones().length === 0) {
+        <p style="color:#64748b;">No tiene notificaciones.</p>
+      } @else {
+        <ul class="reminders-list">
+          @for (n of notificaciones(); track n.id) {
+            <li class="reminder-item">
+              <div class="dot" [class.dot-red]="!n.leida" [class.dot-yellow]="n.leida"></div>
+              <div class="reminder-content">
+                <h5>{{ n.titulo }}</h5>
+                <span>{{ n.cuerpo }}</span>
+                <small style="display:block;color:#94a3b8;margin-top:0.25rem;">{{ n.creadoEn | date:'dd/MM/yyyy HH:mm' }}</small>
+              </div>
+            </li>
+          }
+        </ul>
+      }
+    </div>
+  </div>
+
+  <div class="content-card" style="margin-top: 1.5rem;">
+    <div class="card-header">
+      <h4>Bandeja de entrada</h4>
+      <button type="button" class="link-action" (click)="reload()">Actualizar</button>
+    </div>
+    @if (recibidos().length === 0) {
+      <p style="color:#64748b;">No hay mensajes recibidos.</p>
+    } @else {
+      <ul class="reminders-list">
+        @for (m of recibidos(); track m.id) {
+          <li class="reminder-item">
+            <div class="reminder-content">
+              <h5>{{ m.asunto }} <small style="color:#64748b;font-weight:600;">— {{ etiquetaRemitente(m) }}</small></h5>
+              <span>{{ m.cuerpo }}</span>
+              <small style="display:block;color:#94a3b8;margin-top:0.25rem;">{{ m.creadoEn | date:'dd/MM/yyyy HH:mm' }}</small>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

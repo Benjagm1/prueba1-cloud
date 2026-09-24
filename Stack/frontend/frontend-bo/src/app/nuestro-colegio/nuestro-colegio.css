@@ -1,0 +1,252 @@
+/* VARIABLES GLOBALES */
+.page-layout {
+  --primary-blue: #233e8b; /* Azul base */
+  --dark-blue: #1b3272;    /* Azul para los pilares */
+  --accent-yellow: #f1c40f;/* Amarillo corporativo */
+  --text-dark: #1e293b;
+  --text-gray: #64748b;
+  
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  color: var(--text-dark);
+  background-color: #ffffff;
+}
+
+/* NAVBAR (Reutilizada del Login) */
+.top-navbar {
+  background-color: var(--primary-blue);
+  padding: 1rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-brand { display: flex; align-items: center; gap: 1rem; }
+.nav-logo { height: 45px; background-color: white; border-radius: 8px; padding: 4px; }
+.nav-titles { display: flex; flex-direction: column; }
+.nav-title-main { font-size: 1.2rem; font-weight: 700; color: white; }
+.nav-title-sub { font-size: 0.75rem; letter-spacing: 1px; color: #aeb4d4; }
+.nav-links { list-style: none; display: flex; gap: 2rem; margin: 0; padding: 0; }
+.nav-links a { color: white; text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+.nav-links a.active { color: var(--accent-yellow); }
+
+/* SECCIÓN HERO */
+.hero-section {
+  position: relative;
+  background-image: url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2000&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  padding: 8rem 2rem;
+  text-align: center;
+  color: white;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(15, 23, 42, 0.75); /* Oscurece la foto */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-block;
+  border: 1px solid var(--accent-yellow);
+  color: var(--accent-yellow);
+  padding: 0.4rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  margin-bottom: 1.5rem;
+  background-color: rgba(241, 196, 15, 0.1);
+}
+
+.hero-content h1 { font-size: 3.5rem; font-weight: 800; margin: 0 0 1rem 0; line-height: 1.2; }
+.hero-content p { font-size: 1.15rem; color: #e2e8f0; line-height: 1.6; }
+
+/* CONTENEDOR GENÉRICO PARA SECCIONES */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+
+/* HISTORIA E INFRAESTRUCTURA (Diseño 50/50) */
+.history-section, .infrastructure-section {
+  display: flex;
+  align-items: center;
+  gap: 4rem;
+}
+
+.text-content { flex: 1; }
+.image-content { flex: 1; }
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--primary-blue);
+  margin-bottom: 1.5rem;
+}
+
+.text-content p {
+  font-size: 1.05rem;
+  color: var(--text-gray);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.rounded-img {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  object-fit: cover;
+}
+
+/* Estadísticas (Historia) */
+.stats-container {
+  display: flex;
+  gap: 3rem;
+  margin-top: 2rem;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  border-left: 3px solid var(--primary-blue);
+  padding-left: 1rem;
+}
+
+.stat-number { font-size: 2rem; font-weight: 800; color: var(--primary-blue); }
+.stat-label { font-size: 0.8rem; font-weight: 600; color: var(--text-gray); letter-spacing: 1px; }
+
+/* MISIÓN Y VISIÓN */
+.mission-vision-section {
+  display: flex;
+  gap: 2rem;
+  padding-top: 0; /* Ya tiene padding del container */
+}
+
+.mv-card {
+  flex: 1;
+  border-radius: 16px;
+  padding: 4rem 3rem;
+  text-align: center;
+}
+
+.mission-card { background-color: #f1f5f9; } /* Azul muy claro */
+.vision-card { background-color: #fefce8; }  /* Amarillo muy claro */
+
+.mv-icon-wrapper {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.blue-icon { background-color: var(--primary-blue); color: var(--accent-yellow); }
+.yellow-icon { background-color: var(--accent-yellow); color: var(--primary-blue); }
+.mv-icon-wrapper svg { width: 35px; height: 35px; }
+
+.mv-card h3 { font-size: 1.8rem; font-weight: 700; color: var(--primary-blue); margin-bottom: 1rem; }
+.mv-card p { font-size: 1.05rem; color: var(--text-gray); line-height: 1.7; }
+
+/* PILARES (Fondo Oscuro) */
+.pillars-section {
+  background-color: var(--dark-blue);
+  padding: 6rem 2rem;
+  color: white;
+}
+
+.pillars-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 4rem auto;
+}
+
+.pillars-header h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+.pillars-header p { font-size: 1.1rem; color: #cbd5e1; }
+
+.pillars-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.pillar-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2.5rem 1.5rem;
+  transition: transform 0.3s;
+}
+
+.pillar-card:hover { transform: translateY(-5px); background-color: rgba(255, 255, 255, 0.08); }
+.pillar-icon { width: 36px; height: 36px; color: var(--accent-yellow); margin-bottom: 1.5rem; }
+.pillar-card h4 { font-size: 1.3rem; margin-bottom: 1rem; font-weight: 700; }
+.pillar-card p { font-size: 0.95rem; color: #94a3b8; line-height: 1.5; }
+
+/* SECCIÓN CTA FINAL */
+.cta-section {
+  text-align: center;
+  padding: 6rem 2rem;
+  background-color: #ffffff;
+}
+
+.cta-icon {
+  width: 60px; height: 60px;
+  color: var(--primary-blue);
+  margin: 0 auto 1.5rem auto;
+}
+.cta-icon svg { width: 100%; height: 100%; }
+
+.cta-section h2 { font-size: 2.2rem; font-weight: 800; color: var(--text-dark); margin-bottom: 1rem; }
+.cta-section p { font-size: 1.1rem; color: var(--text-gray); max-width: 600px; margin: 0 auto 2.5rem auto; }
+
+.cta-btn-primary {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.cta-btn-primary:hover { background-color: var(--dark-blue); }
+
+/* FOOTER */
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background-color: #f8f9fa;
+  border-top: 1px solid #e9ecef;
+  color: var(--text-gray);
+  font-size: 0.9rem;
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+  .history-section, .infrastructure-section, .mission-vision-section { flex-direction: column; }
+  .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .pillars-grid { grid-template-columns: 1fr; }
+  .top-navbar, .site-footer { flex-direction: column; gap: 1rem; padding: 1rem; text-align: center; }
+  .hero-content h1 { font-size: 2.5rem; }
+}

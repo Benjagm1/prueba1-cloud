@@ -1,0 +1,5 @@
+Esta carpeta es un duplicado. El frontend Angular oficial está en:
+
+  H\Stack\frontend
+
+Puedes borrar toda la carpeta frontend-angular de forma segura.

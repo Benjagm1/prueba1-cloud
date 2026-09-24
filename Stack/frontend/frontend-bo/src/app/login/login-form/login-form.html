@@ -1,0 +1,75 @@
+<div class="split-layout">
+  
+  <div class="left-panel">
+    
+    <button class="back-link" routerLink="/login">
+      ← Volver al inicio
+    </button>
+
+    <div class="brand-header">
+      <div class="logo-placeholder">🏫</div>
+      <div class="brand-text">
+        <span class="brand-title">Colegio B. O'Higgins</span>
+        <span class="brand-subtitle">COQUIMBO</span>
+      </div>
+    </div>
+
+    <div class="welcome-content">
+      <span class="badge">PORTAL INSTITUCIONAL</span>
+      <h1>Bienvenido a<br>nuestra comunidad</h1>
+      <p>Accede a la plataforma digital centralizada para gestionar tus calificaciones, asistencia, comunicaciones y recursos educativos.</p>
+    </div>
+
+  </div>
+
+  <div class="right-panel">
+    <div class="form-wrapper">
+      
+      <div class="form-header">
+        <h2>Inicia sesión</h2>
+        <p>Ingresa tus credenciales institucionales para acceder.</p>
+      </div>
+
+      @if (error()) {
+        <p class="login-error" role="alert">{{ error() }}</p>
+      }
+
+      <form class="login-form" (ngSubmit)="onLogin($event)">
+        
+        <div class="input-group">
+          <label for="email">Correo Institucional</label>
+          <div class="input-with-icon">
+            <span class="icon">✉️</span>
+            <input type="email" id="email" [(ngModel)]="email" name="email" placeholder="correo@ejemplo.cl" autocomplete="username" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Contraseña</label>
+          <div class="input-with-icon">
+            <span class="icon">🔑</span>
+            <input type="password" id="password" [(ngModel)]="contrasena" name="password" placeholder="••••••••" autocomplete="current-password" required>
+          </div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox"> Recordarme
+          </label>
+          <a href="#" class="forgot-password">¿Olvidé mi contraseña?</a>
+        </div>
+
+        <button type="submit" class="submit-btn" [disabled]="loading()">
+          {{ loading() ? 'Ingresando…' : 'Ingresar al portal' }}
+        </button>
+
+      </form>
+
+      <div class="form-footer">
+        <span>🏫 Colegio Bernardo O'Higgins - Sistema Centralizado</span>
+      </div>
+
+    </div>
+  </div>
+
+</div>

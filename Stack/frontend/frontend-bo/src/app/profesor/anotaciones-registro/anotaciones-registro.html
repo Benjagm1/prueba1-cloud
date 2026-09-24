@@ -1,0 +1,89 @@
+<div class="view-container fade-in">
+  <div class="register-topbar">
+    <a class="back-link" (click)="volver()">← Volver a mis cursos</a>
+    <div class="register-titles">
+      <h2>Anotaciones</h2>
+      <p>Curso: {{ tituloCurso() || idCurso }}</p>
+    </div>
+  </div>
+
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+  @if (cargando()) {
+    <p>Cargando alumnos…</p>
+  } @else {
+    <div class="split-layout">
+      <div class="left-panel content-card">
+        <div class="search-box">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" placeholder="Buscar alumno..." [(ngModel)]="busqueda" (ngModelChange)="onBusquedaChange()">
+        </div>
+        <div class="students-list">
+          @for (alumno of alumnosFiltrados(); track alumno.alumnoUsuarioId) {
+            <div class="student-item"
+                 [class.active]="alumnoSeleccionado()?.alumnoUsuarioId === alumno.alumnoUsuarioId"
+                 (click)="seleccionarAlumno(alumno)">
+              <span>{{ alumno.nombre }}</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="right-panel content-card">
+        @if (!alumnoSeleccionado()) {
+          <div class="empty-state">
+            <div class="empty-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <h3>Selecciona un Alumno</h3>
+            <p>Haz clic en un alumno de la lista para ver su historial de conducta o registrar una nueva observación.</p>
+          </div>
+        } @else {
+          <div class="active-state fade-in">
+            <div class="student-header">
+              <div class="student-avatar">{{ alumnoSeleccionado()!.inicial }}</div>
+              <div>
+                <h3>{{ alumnoSeleccionado()!.nombre }}</h3>
+                <p>Historial y nueva anotación</p>
+              </div>
+            </div>
+            <div class="action-split">
+              <div class="form-section">
+                <span class="section-label">NUEVA ANOTACIÓN</span>
+                <div class="type-toggle">
+                  <button [class.active-pos]="tipoAnotacion === 'positiva'" (click)="setTipoAnotacion('positiva')">Positiva</button>
+                  <button [class.active-neg]="tipoAnotacion === 'negativa'" (click)="setTipoAnotacion('negativa')">Negativa</button>
+                </div>
+                <textarea placeholder="Detalle el motivo de la anotación..." [(ngModel)]="textoAnotacion"></textarea>
+                <button class="btn-submit" (click)="guardarAnotacion()" [disabled]="!textoAnotacion.trim() || guardando()">
+                  {{ guardando() ? 'Guardando…' : 'Guardar Anotación' }}
+                </button>
+              </div>
+              <div class="history-section">
+                <span class="section-label">HISTORIAL RECIENTE</span>
+                <div class="history-list">
+                  @for (nota of alumnoSeleccionado()!.anotaciones; track nota.fecha + nota.texto) {
+                    <div class="history-card" [class]="nota.tipo">
+                      <div class="history-header">
+                        <span class="badge">{{ nota.tipo | uppercase }}</span>
+                        <span class="date">{{ nota.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
+                      </div>
+                      <p>{{ nota.texto }}</p>
+                    </div>
+                  }
+                  @if (alumnoSeleccionado()!.anotaciones.length === 0) {
+                    <div style="color: #94a3b8; font-size: 0.9rem; text-align: center; margin-top: 2rem;">
+                      No hay anotaciones recientes.
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

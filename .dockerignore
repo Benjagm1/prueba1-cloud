@@ -1,0 +1,16 @@
+# Contexto de build = raíz H (ver Contenedores/docker-compose.yml)
+.git
+**/.git
+
+Stack/Backend/target
+**/*.jar.original
+
+# Frontend: no enviar node_modules ni dist al daemon
+Stack/frontend/node_modules
+Stack/frontend/dist
+Stack/frontend/.angular
+Stack/frontend/frontend-bo/node_modules
+Stack/frontend/frontend-bo/dist
+
+# JAR copiado para uso local (no hace falta en la imagen)
+Contenedores/Contenedor - ms_auth/*.jar

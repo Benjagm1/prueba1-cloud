@@ -1,0 +1,28 @@
+.attendance-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.attendance-table th,
+.attendance-table td {
+  padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.attendance-table th {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.anotacion-meta {
+  display: block;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 0.35rem;
+}

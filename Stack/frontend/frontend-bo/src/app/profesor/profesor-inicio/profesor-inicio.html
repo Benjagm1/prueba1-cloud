@@ -1,0 +1,96 @@
+<div class="fade-in" style="padding-top: 1rem;">
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon box-light">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Clases de Hoy</span>
+        <h3>{{ clasesHoyLabel() }}</h3>
+        <span class="stat-sub">{{ proximaClaseLabel() }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon box-light">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Mensajes Nuevos</span>
+        <h3>{{ mensajesNuevos() }}</h3>
+        <span class="stat-sub">DE: APODERADOS</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon box-light">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Asistencia Promedio</span>
+        <h3>{{ asistenciaPct() }}</h3>
+        <span class="stat-sub">{{ asistenciaSub() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-grid" style="margin-top: 1.5rem;">
+
+    <div class="content-card">
+      <div class="card-header">
+        <h4>Horario de Clases (Hoy)</h4>
+        <a routerLink="/profesor/horario" class="link-action">Ver completo</a>
+      </div>
+
+      @if (cargando()) {
+        <p style="color:#64748b;">Cargando horario…</p>
+      } @else if (!esHoyLectivo()) {
+        <p style="color:#64748b;">Hoy no hay clases (fin de semana o feriado).</p>
+      } @else if (clasesHoy().length === 0) {
+        <p style="color:#64748b;">No tiene bloques asignados para hoy.</p>
+      } @else {
+        <div class="schedule-list">
+          @for (clase of clasesHoy(); track clase.cursoId + '-' + clase.inicio) {
+            <div class="schedule-item" [class]="claseCssEstado(clase.estado)">
+              <div class="time">{{ clase.inicio }} - {{ clase.fin }}</div>
+              <div class="class-details">
+                <h5>{{ clase.cursoNombre }} - {{ clase.asignaturaNombre }}</h5>
+                <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+                  {{ clase.sala }}
+                </span>
+              </div>
+              <div class="status-badge" [class]="badgeCssEstado(clase.estado)">{{ etiquetaEstado(clase.estado) }}</div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="content-card">
+      <div class="card-header">
+        <h4>Recordatorios</h4>
+      </div>
+
+      @if (recordatorios().length === 0) {
+        <p style="color:#64748b;font-size:0.9rem;">Sin avisos institucionales. Los recordatorios administrativos aparecerán aquí cuando estén disponibles.</p>
+      } @else {
+        <div class="reminders-list">
+          @for (r of recordatorios(); track r.id) {
+            <div class="reminder-item">
+              <div class="dot" [class.dot-red]="!r.leida" [class.dot-yellow]="r.leida"></div>
+              <div class="reminder-content">
+                <h5>{{ r.titulo }}</h5>
+                <span>{{ r.cuerpo }}</span>
+                <small style="display:block;color:#94a3b8;margin-top:0.25rem;">{{ r.creadoEn | date:'dd/MM/yyyy HH:mm' }}</small>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  </div>
+
+</div>

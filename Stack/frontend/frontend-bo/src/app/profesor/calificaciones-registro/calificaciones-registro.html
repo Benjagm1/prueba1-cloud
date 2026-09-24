@@ -1,0 +1,68 @@
+<div class="view-container fade-in">
+  
+  <div class="register-header-actions">
+    <a class="back-link" (click)="volver()">← Volver a mis cursos</a>
+  </div>
+
+  <div class="register-topbar">
+    <div class="register-titles">
+      <h2>Planilla de Calificaciones</h2>
+      <p>Curso: <strong class="text-highlight">{{ tituloCurso() || idCurso }}</strong> • Semestre 1</p>
+    </div>
+    <div class="register-controls">
+      <button class="btn-primary" (click)="guardarNotas()" [disabled]="guardando() || cargando()">
+        {{ guardando() ? 'Guardando…' : 'Guardar Cambios' }}
+      </button>
+    </div>
+  </div>
+
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+  @if (mensaje()) {
+    <p style="color:#059669;margin-bottom:1rem;">{{ mensaje() }}</p>
+  }
+  @if (cargando()) {
+    <p>Cargando alumnos…</p>
+  }
+
+  @if (!cargando()) {
+    <div class="content-card">
+      <table class="attendance-table">
+        <thead>
+          <tr>
+            <th width="5%">N°</th>
+            <th width="35%">ALUMNO</th>
+            <th width="15%" class="text-center">NOTA 1</th>
+            <th width="15%" class="text-center">NOTA 2</th>
+            <th width="15%" class="text-center">NOTA 3</th>
+            <th width="15%" class="text-center">PROMEDIO</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (alumno of alumnos(); track alumno.alumnoUsuarioId; let i = $index) {
+            <tr>
+              <td>{{ i + 1 }}</td>
+              <td class="student-name">{{ alumno.nombre }}</td>
+              <td class="text-center">
+                <input type="number" step="0.1" min="1.0" max="7.0" class="grade-input" [(ngModel)]="alumno.n1" (blur)="alumno.n1 = alumno.n1 != null ? +(+alumno.n1).toFixed(1) : null">
+              </td>
+              <td class="text-center">
+                <input type="number" step="0.1" min="1.0" max="7.0" class="grade-input" [(ngModel)]="alumno.n2" (blur)="alumno.n2 = alumno.n2 != null ? +(+alumno.n2).toFixed(1) : null">
+              </td>
+              <td class="text-center">
+                <input type="number" step="0.1" min="1.0" max="7.0" class="grade-input" [(ngModel)]="alumno.n3" (blur)="alumno.n3 = alumno.n3 != null ? +(+alumno.n3).toFixed(1) : null">
+              </td>
+              <td class="text-center">
+                <span class="average-badge" [class.rojo]="calcularPromedio(alumno) < '4.0' && calcularPromedio(alumno) !== '-'">
+                  {{ calcularPromedio(alumno) }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+
+</div>

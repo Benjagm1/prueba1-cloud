@@ -1,0 +1,135 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-api-health: &api-health
+  interval: 30s
+  timeout: 10s
+  retries: 5
+  start_period: 90s
+
+services:
+  # 1. Base de datos
+  postgres:
+    image: postgres:16-alpine
+    pull_policy: always
+    container_name: postgres-colegio-boh
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-postgres}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-Benya120703.}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 15
+    volumes:
+      - postgres-colegio-data:/var/lib/postgresql/data
+      - ./mysql-init:/docker-entrypoint-initdb.d:ro
+    deploy:
+      resources:
+        limits:
+          cpus: "1.00"
+          memory: 1024M
+        reservations:
+          cpus: "0.25"
+          memory: 512M
+
+  # 2. Catálogo: ms-administracion (Puerto interno cerrado al exterior)
+  admin-api:
+    build:
+      context: ..
+      dockerfile: Contenedores/Contenedor - ms_administracion/Dockerfile
+    container_name: admin-service
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      SERVER_PORT: 8052
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_administracion
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-Benya120703.}
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-dev-internal-token}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      <<: *api-health
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8052/actuator/health | grep -q UP"]
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+        reservations:
+          cpus: "0.15"
+          memory: 256M
+
+  # 3. Principal: ms-academico (Puerto interno cerrado al exterior)
+  academico-api:
+    build:
+      context: ..
+      dockerfile: Contenedores/Contenedor - ms_academico/Dockerfile
+    container_name: academico-service
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      SERVER_PORT: 8053
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/db_academico
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-Benya120703.}
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-dev-internal-token}
+      MS_ADMINISTRACION_BASE_URL: http://admin-api:8052
+    depends_on:
+      postgres:
+        condition: service_healthy
+      admin-api:
+        condition: service_healthy
+    healthcheck:
+      <<: *api-health
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8053/actuator/health | grep -q UP"]
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+        reservations:
+          cpus: "0.15"
+          memory: 256M
+
+  # 4. Backend for Frontend: ms-bff (Único expuesto en puerto 8080)
+  ms-bff:
+    build:
+      context: ..
+      dockerfile: Contenedores/Contenedor - ms_bff/Dockerfile
+    container_name: bff-service
+    restart: unless-stopped
+    logging: *default-logging
+    ports:
+      - "8080:8080"
+    environment:
+      SERVER_PORT: 8080
+      SERVICES_ACADEMICO_URL: http://academico-api:8053
+      SERVICES_ADMINISTRACION_URL: http://admin-api:8052
+      SERVICES_INTERNAL_TOKEN: ${INTERNAL_API_TOKEN:-dev-internal-token}
+    depends_on:
+      academico-api:
+        condition: service_healthy
+      admin-api:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
+        reservations:
+          cpus: "0.10"
+          memory: 128M
+
+volumes:
+  postgres-colegio-data:

@@ -1,0 +1,47 @@
+<div class="view-container fade-in">
+  <div class="page-header">
+    <h2>Horario completo</h2>
+    <p>Semana lectiva (lunes a viernes) según sus asignaciones</p>
+  </div>
+
+  <p style="margin-bottom:1rem;">
+    <a routerLink="/profesor" class="link-action">← Volver al inicio</a>
+  </p>
+
+  @if (cargando()) {
+    <p style="color:#64748b;">Cargando horario…</p>
+  } @else if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  } @else {
+    <div class="horario-semana">
+      @for (diaClases of semana(); track $index) {
+        <div class="content-card dia-card" [class.dia-hoy]="$index === hoyIndice()">
+          <div class="card-header">
+            <h4>{{ nombresDia[$index + 1] }}</h4>
+            @if ($index === hoyIndice()) {
+              <span class="badge-hoy">Hoy</span>
+            }
+          </div>
+          @if (diaClases.length === 0) {
+            <p style="color:#64748b;">Sin clases</p>
+          } @else {
+            <div class="schedule-list">
+              @for (clase of diaClases; track clase.cursoId + '-' + clase.inicio) {
+                <div class="schedule-item" [class]="claseCssEstado(clase.estado)">
+                  <div class="time">{{ clase.inicio }} - {{ clase.fin }}</div>
+                  <div class="class-details">
+                    <h5>{{ clase.cursoNombre }} - {{ clase.asignaturaNombre }}</h5>
+                    <span>{{ clase.sala }}</span>
+                  </div>
+                  @if ($index === hoyIndice()) {
+                    <div class="status-badge" [class]="badgeCssEstado(clase.estado)">{{ etiquetaEstado(clase.estado) }}</div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

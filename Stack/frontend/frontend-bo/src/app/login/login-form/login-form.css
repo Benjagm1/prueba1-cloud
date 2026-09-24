@@ -1,0 +1,288 @@
+.login-error {
+  margin: 0 0 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  background: #ffebee;
+  color: #c62828;
+  font-size: 0.9rem;
+}
+
+/* =========================================
+   VARIABLES GLOBALES DEL COMPONENTE
+   ========================================= */
+.split-layout {
+  --primary-blue: #1c3d8a; /* El azul oscuro de tu diseño */
+  --primary-blue-hover: #152f6b;
+  --text-dark: #0f172a;
+  --text-gray: #64748b;
+  --border-color: #cbd5e1;
+  --bg-gray: #f8fafc;
+  
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+/* =========================================
+   PANEL IZQUIERDO (AZUL)
+   ========================================= */
+.left-panel {
+  flex: 0 0 40%; /* Ocupa el 40% de la pantalla */
+  background-color: var(--primary-blue);
+  color: white;
+  padding: 3rem 4rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.back-link {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin-bottom: 3rem;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.back-link:hover {
+  opacity: 1;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: auto; /* Empuja el contenido de abajo hacia el centro */
+}
+
+/* Reemplazar con el logo real si es necesario */
+.logo-placeholder {
+  width: 50px;
+  height: 50px;
+  background-color: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.brand-subtitle {
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  opacity: 0.8;
+}
+
+.welcome-content {
+  margin-bottom: auto;
+}
+
+.badge {
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 0.4rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 2rem;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.welcome-content h1 {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  margin: 0 0 1.5rem 0;
+}
+
+.welcome-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  max-width: 90%;
+}
+
+/* =========================================
+   PANEL DERECHO (FORMULARIO BLANCO)
+   ========================================= */
+.right-panel {
+  flex: 0 0 60%; /* Ocupa el 60% restante */
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 450px; /* Ancho máximo del formulario */
+}
+
+.form-header {
+  margin-bottom: 2.5rem;
+}
+
+.form-header h2 {
+  font-size: 2.2rem;
+  color: var(--text-dark);
+  margin: 0 0 0.5rem 0;
+  font-weight: 800;
+}
+
+.form-header p {
+  color: var(--text-gray);
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Estilos de Inputs y Formulario */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input-group label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-dark);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Icono de la izquierda (Usuario / Llave) */
+.input-with-icon .icon {
+  position: absolute;
+  left: 1rem;
+  font-size: 1.1rem;
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+/* Icono de la derecha (Ojo para contraseña) */
+.input-with-icon .icon-right {
+  position: absolute;
+  right: 1rem;
+  font-size: 1.1rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.input-with-icon input {
+  width: 100%;
+  padding: 1rem 2.8rem 1rem 3rem; /* Espacio para los iconos */
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s;
+  background-color: var(--bg-gray);
+}
+
+.input-with-icon input:focus {
+  border-color: var(--primary-blue);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(28, 61, 138, 0.1);
+}
+
+/* Opciones de Recordarme y Olvidé Contraseña */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.remember-me {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-gray);
+  cursor: pointer;
+}
+
+.forgot-password {
+  font-size: 0.9rem;
+  color: var(--primary-blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.forgot-password:hover {
+  text-decoration: underline;
+}
+
+/* Botón de envío */
+.submit-btn {
+  background-color: var(--primary-blue);
+  color: white;
+  border: none;
+  padding: 1.1rem;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: var(--primary-blue-hover);
+}
+
+/* Footer del formulario */
+.form-footer {
+  text-align: center;
+  margin-top: 4rem;
+  color: var(--text-gray);
+  font-size: 0.85rem;
+}
+
+/* =========================================
+   RESPONSIVO (Para Celulares)
+   ========================================= */
+@media (max-width: 900px) {
+  .split-layout {
+    flex-direction: column;
+  }
+  .left-panel {
+    flex: none;
+    padding: 2rem;
+  }
+  .right-panel {
+    flex: none;
+    padding: 3rem 1.5rem;
+  }
+}

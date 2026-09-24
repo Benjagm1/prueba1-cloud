@@ -1,0 +1,22 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ms-bff
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Issuer exacto de tu User Pool en us-east-1
+          issuer-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_JEV8rmnsH
+          jwk-set-uri: https://cognito-idp.us-east-1.amazonaws.com/us-east-1_JEV8rmnsH/.well-known/jwks.json
+
+# URLs de los microservicios internos en Docker Compose
+services:
+  # ms-academico corre en el puerto interno 8053
+  academico-url: http://ms-academico:8053
+  # ms-administracion corre en el puerto interno 8052
+  administracion-url: http://ms-administracion:8052
+  # Token interno para comunicarse con tus otros MS si lo requieren
+  internal-token: "tu_token_interno_super_secreto_2026"

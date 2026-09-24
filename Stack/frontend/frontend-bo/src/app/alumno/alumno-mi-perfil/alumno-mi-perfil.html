@@ -1,0 +1,63 @@
+<div class="view-container fade-in">
+  <div class="page-header">
+    <h2>Mi perfil</h2>
+    <p>Consulta de datos personales (solo lectura)</p>
+  </div>
+
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+  @if (cargando()) {
+    <p>Cargando perfil…</p>
+  } @else {
+    <div class="perfil-grid">
+      <div class="content-card">
+        <h3 style="margin-top:0;">Datos personales</h3>
+        @if (perfil(); as p) {
+          <dl class="perfil-dl">
+            <dt>Nombre</dt><dd>{{ p.nombre }}</dd>
+            <dt>Apellido</dt><dd>{{ p.apellido }}</dd>
+            <dt>Correo</dt><dd>{{ p.email }}</dd>
+            <dt>Teléfono</dt><dd>{{ p.telefono || '—' }}</dd>
+          </dl>
+        }
+        <p class="readonly-hint">Para modificar estos datos, contacte a administración del colegio.</p>
+      </div>
+
+      <div class="content-card">
+        <h3 style="margin-top:0;">Información escolar</h3>
+        @if (ficha(); as f) {
+          <dl class="perfil-dl">
+            <dt>Curso</dt><dd>{{ f.cursoNombre }} ({{ f.cursoCodigo }})</dd>
+            <dt>Asignaturas</dt>
+            <dd>
+              @if (f.asignaturas.length === 0) {
+                —
+              } @else {
+                <ul class="asig-list">
+                  @for (a of f.asignaturas; track a.id) {
+                    <li>{{ a.nombre }}</li>
+                  }
+                </ul>
+              }
+            </dd>
+          </dl>
+        }
+      </div>
+
+      <div class="content-card">
+        <h3 style="margin-top:0;">Mi apoderado</h3>
+        @if (apoderado(); as ap) {
+          <dl class="perfil-dl">
+            <dt>Nombre</dt><dd>{{ ap.nombre }} {{ ap.apellido }}</dd>
+            <dt>Correo</dt><dd>{{ ap.email }}</dd>
+            <dt>Teléfono</dt><dd>{{ ap.telefono || '—' }}</dd>
+          </dl>
+        } @else {
+          <p style="color:#64748b;">No hay apoderado vinculado a su cuenta.</p>
+        }
+        <p class="readonly-hint">Datos de solo consulta.</p>
+      </div>
+    </div>
+  }
+</div>

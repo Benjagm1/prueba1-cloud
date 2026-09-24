@@ -1,0 +1,324 @@
+/* =========================================
+   VARIABLES DE COLOR
+   ========================================= */
+.home-layout {
+  --nav-bg: #2b3990;       
+  --bg-light: #f8f9fa;     
+  --text-main: #212529;
+  --text-muted: #6c757d;
+  
+  --color-alumno: #0d6efd;   
+  --color-profesor: #6610f2; 
+  --color-apoderado: #20c997;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background-color: var(--bg-light);
+}
+
+/* =========================================
+   BARRA DE NAVEGACIÓN
+   ========================================= */
+.top-navbar {
+  background-color: var(--nav-bg) !important;
+  padding: 1rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-logo {
+  height: 45px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.nav-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-title-main {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: white !important;
+}
+
+.nav-title-sub {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: #aeb4d4 !important;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white !important;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* =========================================
+   SECCIÓN HERO
+   ========================================= */
+.hero-section {
+  background: linear-gradient(rgba(31, 41, 55, 0.8), rgba(31, 41, 55, 0.8)), 
+              url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?q=80&w=2069&auto=format&fit=crop') center/cover;
+  padding: 5rem 2rem 12rem 2rem;
+  text-align: center;
+  color: white;
+}
+
+.hero-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.15);
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* BLINDAJE DEL SVG DEL BADGE SUPERIOR */
+.hero-badge svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+}
+
+.hero-content h1 {
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin: 0 0 1.5rem 0;
+}
+
+.hero-content p {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #e5e7eb;
+}
+
+/* =========================================
+   SECCIÓN DE TARJETAS
+   ========================================= */
+.cards-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 0 2rem;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  width: 100%;
+  margin-top: -7rem;
+  margin-bottom: 4rem;
+}
+
+/* Estructura de la tarjeta */
+.role-card {
+  background: #ffffff !important;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-top: 6px solid transparent; 
+}
+
+.role-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.card-alumno { border-top-color: var(--color-alumno) !important; }
+.card-profesor { border-top-color: var(--color-profesor) !important; }
+.card-apoderado { border-top-color: var(--color-apoderado) !important; }
+
+/* =========================================
+   BLINDAJE DE ÍCONOS SVG (Evita que se agranden)
+   ========================================= */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem 2rem 1rem 2rem;
+}
+
+.icon-box {
+  width: 50px;
+  height: 50px;
+  min-width: 50px; /* Evita que la caja se aplaste */
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fuerza el tamaño del SVG principal */
+.icon-box svg {
+  width: 26px !important;
+  height: 26px !important;
+  max-width: 26px !important;
+}
+
+.card-alumno .icon-box { color: var(--color-alumno); background-color: #e7f1ff; }
+.card-profesor .icon-box { color: var(--color-profesor); background-color: #f0e6ff; }
+.card-apoderado .icon-box { color: var(--color-apoderado); background-color: #e6f9f5; }
+
+.header-text h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--text-main);
+  font-weight: 700;
+}
+
+.header-text span {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.card-body {
+  padding: 0 2rem 2rem 2rem;
+  flex: 1;
+}
+
+.intro-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+/* =========================================
+   LISTAS Y SVG PEQUEÑOS
+   ========================================= */
+.feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.feature-list li {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-start;
+}
+
+.list-icon {
+  flex-shrink: 0; 
+  display: flex;
+  align-items: center;
+  width: 24px;
+}
+
+/* Fuerza el tamaño de los íconos de la lista */
+.list-icon svg {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  stroke-width: 2px;
+}
+
+.card-alumno .list-icon { color: var(--color-alumno); }
+.card-profesor .list-icon { color: var(--color-profesor); }
+.card-apoderado .list-icon { color: var(--color-apoderado); }
+
+.list-text {
+  font-size: 0.9rem;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+/* =========================================
+   BOTONES Y FOOTER (Blindado)
+   ========================================= */
+.card-footer {
+  padding: 1.5rem 2rem 2.5rem 2rem !important; /* Forzamos el espacio interior */
+  text-align: center;
+  margin-top: auto; /* Si sobra espacio arriba, empuja el botón al fondo */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cta-button {
+  display: block !important;
+  width: 100% !important;
+  background-color: transparent !important;
+  border: 2px solid #dee2e6 !important;
+  padding: 0.9rem 1rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  font-family: inherit !important;
+  text-align: center !important;
+  transition: all 0.3s ease !important;
+  pointer-events: none !important; /* Evita que el botón intercepte el clic de la tarjeta */
+}
+
+/* Colores de los bordes y textos por defecto */
+.card-alumno .cta-button { color: var(--color-alumno) !important; border-color: #b6d4fe !important; }
+.card-profesor .cta-button { color: var(--color-profesor) !important; border-color: #d1b3ff !important; }
+.card-apoderado .cta-button { color: var(--color-apoderado) !important; border-color: #9eeaf9 !important; }
+
+/* Efecto mágico: al pasar el mouse por la tarjeta, el botón se rellena */
+.card-alumno:hover .cta-button { background-color: var(--color-alumno) !important; color: white !important; border-color: var(--color-alumno) !important; }
+.card-profesor:hover .cta-button { background-color: var(--color-profesor) !important; color: white !important; border-color: var(--color-profesor) !important; }
+.card-apoderado:hover .cta-button { background-color: var(--color-apoderado) !important; color: white !important; border-color: var(--color-apoderado) !important; }
+
+/* =========================================
+   FOOTER PRINCIPAL
+   ========================================= */
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.5rem 4rem;
+  background-color: white;
+  border-top: 1px solid #e9ecef;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 768px) {
+  .top-navbar, .site-footer { 
+    padding: 1rem 2rem; 
+    flex-direction: column; 
+    gap: 1rem; 
+    text-align: center; 
+  }
+  .hero-content h1 { font-size: 2.5rem; }
+}

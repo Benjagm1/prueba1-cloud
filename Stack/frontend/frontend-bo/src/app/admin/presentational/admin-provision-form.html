@@ -1,0 +1,103 @@
+<form (ngSubmit)="onSubmit()" class="provision-form">
+  <div class="form-section">
+    <p class="form-section__title">Datos personales</p>
+    <div class="form-grid form-grid--2">
+      <div class="field">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" [(ngModel)]="value.nombre" name="nombre" required autocomplete="given-name" />
+      </div>
+      <div class="field">
+        <label for="apellido">Apellido</label>
+        <input id="apellido" [(ngModel)]="value.apellido" name="apellido" required autocomplete="family-name" />
+      </div>
+      <div class="field">
+        <label for="email">Correo institucional</label>
+        <input id="email" type="email" [(ngModel)]="value.email" name="email" required autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="pass">Contraseña inicial</label>
+        <input id="pass" type="password" [(ngModel)]="value.contrasena" name="pass" required minlength="6" />
+        <span class="hint">El usuario podrá cambiarla después desde su perfil.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <p class="form-section__title">Rol en el colegio</p>
+    <div class="field field-narrow">
+      <label for="rol">Tipo de cuenta</label>
+      <select id="rol" [(ngModel)]="value.rol" name="rol">
+        <option value="alumno">Alumno (apoderado existente)</option>
+        <option value="profesor">Profesor</option>
+      </select>
+      <span class="hint">Para registrar apoderado y alumno nuevos juntos, use la pestaña «Alumno + apoderado».</span>
+    </div>
+  </div>
+
+  @if (value.rol === 'alumno') {
+    <div class="form-section">
+      <p class="form-section__title">Inscripción del alumno</p>
+      <div class="form-grid form-grid--2">
+        <div class="field">
+          <label for="curso">Curso</label>
+          <select id="curso" [(ngModel)]="value.cursoId" name="curso" required>
+            <option [ngValue]="null">Seleccione un curso…</option>
+            @for (c of cursos; track c.id) {
+              <option [ngValue]="c.id">{{ cursoLabel(c) }}</option>
+            }
+          </select>
+          <span class="hint">Solo cursos de enseñanza media (MED1–MED4).</span>
+        </div>
+        <div class="field">
+          <label for="apoderado">Apoderado responsable</label>
+          <select id="apoderado" [(ngModel)]="value.apoderadoUsuarioId" name="apoderado" required>
+            <option [ngValue]="null">Seleccione un apoderado…</option>
+            @for (a of apoderados; track a.id) {
+              <option [ngValue]="a.id">{{ usuarioLabel(a) }}</option>
+            }
+          </select>
+          @if (apoderados.length === 0) {
+            <span class="hint">Si el apoderado aún no existe, use la pestaña «Alumno + apoderado».</span>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (value.rol === 'profesor') {
+    <div class="form-section">
+      <p class="form-section__title">Asignación docente inicial</p>
+      <p class="hint-block">
+        El horario visible en el portal del docente se genera automáticamente según sus asignaciones de curso y asignatura.
+        Puede agregar más cursos en la pestaña «Carga docente».
+      </p>
+      <div class="form-grid form-grid--2">
+        <div class="field">
+          <label for="cursoProf">Curso</label>
+          <select id="cursoProf" [(ngModel)]="value.cursoId" name="cursoProf" required>
+            <option [ngValue]="null">Seleccione un curso…</option>
+            @for (c of cursosParaRol(); track c.id) {
+              <option [ngValue]="c.id">{{ cursoLabel(c) }}</option>
+            }
+          </select>
+        </div>
+        <div class="field">
+          <label for="asig">Asignatura</label>
+          <select id="asig" [(ngModel)]="value.asignaturaId" name="asig" required>
+            <option [ngValue]="null">Seleccione una asignatura…</option>
+            @for (a of asignaturas; track a.id) {
+              <option [ngValue]="a.id">{{ asignaturaLabel(a) }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="form-actions">
+    <button type="submit" class="btn-primary" [disabled]="saving || !formValid()">
+      {{ saving ? 'Creando cuenta…' : 'Crear cuenta' }}
+    </button>
+    <button type="button" class="btn-ghost" (click)="resetForm()" [disabled]="saving">Limpiar formulario</button>
+  </div>
+</form>

@@ -1,0 +1,67 @@
+:root {
+  --sidebar-bg: #0b1930;    
+  --bg-main: #f8fafc;       
+  --text-dark: #0f172a;
+  --text-gray: #64748b;
+  --border-color: #e2e8f0;
+}
+
+.view-container {
+  padding: 1rem 0;
+}
+
+.page-header { margin-bottom: 2rem; }
+.page-header h2 { margin: 0 0 0.3rem 0; font-size: 1.5rem; color: var(--text-dark); font-weight: 800; }
+.page-header p { margin: 0; color: var(--text-gray); font-size: 0.95rem; }
+
+.fade-in { animation: fadeIn 0.3s ease-in-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* TARJETAS DE CURSOS */
+.course-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.course-card {
+  background-color: white;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.course-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  border-color: #cbd5e1;
+}
+
+.course-card-header {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;
+}
+
+.course-icon {
+  width: 40px; height: 40px; background-color: #f8fafc;
+  border: 1px solid var(--border-color); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; color: var(--sidebar-bg);
+}
+.course-icon svg { width: 20px !important; height: 20px !important; }
+
+.course-badge { background-color: #f1f5f9; color: var(--text-gray); padding: 0.3rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; }
+
+.course-card-body h3 { margin: 0 0 0.3rem 0; font-size: 1.4rem; color: var(--text-dark); font-weight: 800; }
+.course-card-body p { margin: 0; color: var(--sidebar-bg); font-size: 0.9rem; font-weight: 600; }
+
+.course-card-footer {
+  margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-color); display: flex; flex-direction: column;
+}
+.course-card-footer span { font-size: 0.7rem; color: var(--text-gray); font-weight: 700; letter-spacing: 0.5px; }
+.course-card-footer strong { font-size: 1.2rem; color: var(--text-dark); margin-top: 0.2rem; }

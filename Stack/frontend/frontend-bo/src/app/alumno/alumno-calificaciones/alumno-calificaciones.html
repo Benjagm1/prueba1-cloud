@@ -1,0 +1,40 @@
+<div class="view-container fade-in">
+  <div class="page-header">
+    <h2>Mis Calificaciones</h2>
+    <p>Curso: <strong>{{ curso() || '—' }}</strong> · Solo consulta</p>
+  </div>
+
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+  @if (cargando()) {
+    <p>Cargando notas…</p>
+  } @else if (filas().length === 0) {
+    <div class="content-card">
+      <p style="color:#64748b;">Aún no tiene calificaciones registradas.</p>
+    </div>
+  } @else {
+    <div class="content-card">
+      <table class="attendance-table">
+        <thead>
+          <tr>
+            <th>Asignatura</th>
+            <th>Evaluación</th>
+            <th class="text-center">Nota</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (f of filas(); track f.asignatura + f.evaluacion) {
+            <tr>
+              <td>{{ f.asignatura }}</td>
+              <td>{{ f.evaluacion }}</td>
+              <td class="text-center">
+                <span class="average-badge" [class.rojo]="f.nota < 4.0">{{ f.nota.toFixed(1) }}</span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

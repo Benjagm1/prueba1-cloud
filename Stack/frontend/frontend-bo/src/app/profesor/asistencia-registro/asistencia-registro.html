@@ -1,0 +1,107 @@
+<div class="view-container fade-in">
+
+  <div class="register-header-actions">
+
+    <a class="back-link" (click)="volver()">← Volver a mis cursos</a>
+
+  </div>
+
+
+
+  <div class="register-topbar">
+
+    <div class="register-titles">
+
+      <h2>Registro de Asistencia</h2>
+
+      <p>Curso: <strong class="text-highlight">{{ idCurso }}</strong> • Asignatura Asignada</p>
+
+    </div>
+
+    <div class="register-controls">
+
+      <input type="date" class="date-input" [(ngModel)]="fechaActual" (change)="onFechaChange()">
+
+      <button class="btn-primary" (click)="guardarAsistencia()" [disabled]="cargando() || guardando() || alumnos().length === 0">
+
+        {{ guardando() ? 'Guardando…' : 'Guardar Asistencia' }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+
+
+  @if (mensaje()) {
+    <p style="color:#059669;margin-bottom:1rem;">{{ mensaje() }}</p>
+  }
+  @if (error()) {
+
+    <p class="login-error">{{ error() }}</p>
+
+  }
+
+  @if (cargando()) {
+
+    <p>Cargando alumnos…</p>
+
+  } @else {
+
+    <div class="content-card">
+
+      <table class="attendance-table">
+
+        <thead>
+
+          <tr>
+
+            <th width="5%">N°</th>
+
+            <th width="35%">ALUMNO</th>
+
+            <th width="20%" class="text-center">PRESENTE</th>
+
+            <th width="20%" class="text-center">AUSENTE</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          @for (alumno of alumnos(); track alumno.alumnoUsuarioId; let i = $index) {
+
+            <tr>
+
+              <td>{{ i + 1 }}</td>
+
+              <td class="student-name">{{ alumno.nombre }}</td>
+
+              <td class="text-center">
+
+                <input type="radio" [name]="'estado_'+alumno.alumnoUsuarioId" value="presente" [checked]="alumno.estado === 'presente'" (change)="setEstado(alumno.alumnoUsuarioId, 'presente')">
+
+              </td>
+
+              <td class="text-center">
+
+                <input type="radio" [name]="'estado_'+alumno.alumnoUsuarioId" value="ausente" [checked]="alumno.estado === 'ausente'" (change)="setEstado(alumno.alumnoUsuarioId, 'ausente')">
+
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>
+

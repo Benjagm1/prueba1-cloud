@@ -1,0 +1,36 @@
+<div class="view-container fade-in">
+  <div class="page-header">
+    <h2>Mis Anotaciones</h2>
+    <p>Registro de conducta y observaciones · Solo consulta</p>
+  </div>
+
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+  @if (cargando()) {
+    <p>Cargando anotaciones…</p>
+  } @else if (anotaciones().length === 0) {
+    <div class="content-card">
+      <p style="color:#64748b;">No tiene anotaciones registradas.</p>
+    </div>
+  } @else {
+    <div class="content-card">
+      <ul class="reminders-list">
+        @for (a of anotaciones(); track a.id) {
+          <li class="reminder-item">
+            <div class="dot" [class.dot-red]="a.tipo === 'negativa'" [class.dot-yellow]="a.tipo !== 'negativa'"></div>
+            <div class="reminder-content">
+              <h5>{{ etiquetaTipo(a.tipo) }}</h5>
+              <span class="anotacion-meta">
+                @if (a.asignaturaNombre) { <strong>{{ a.asignaturaNombre }}</strong> · }
+                Docente: {{ a.profesorNombre || '—' }}
+              </span>
+              <span>{{ a.texto }}</span>
+              <small style="display:block;color:#94a3b8;margin-top:0.25rem;">{{ a.creadoEn | date:'dd/MM/yyyy HH:mm' }}</small>
+            </div>
+          </li>
+        }
+      </ul>
+    </div>
+  }
+</div>

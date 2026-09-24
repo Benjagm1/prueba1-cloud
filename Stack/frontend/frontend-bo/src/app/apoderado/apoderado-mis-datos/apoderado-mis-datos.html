@@ -1,0 +1,71 @@
+<div class="view-container fade-in">
+  <div class="page-header">
+    <h2>Mis datos</h2>
+    <p>Actualice su información personal y la de su pupilo</p>
+  </div>
+
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+  @if (mensaje()) {
+    <p style="color:#059669;margin-bottom:1rem;">{{ mensaje() }}</p>
+  }
+  @if (cargando()) {
+    <p>Cargando…</p>
+  } @else {
+    <div class="datos-grid">
+      <div class="content-card">
+        <h3 style="margin-top:0;">Mis datos personales</h3>
+        <div class="field">
+          <label for="mi-nombre">Nombre</label>
+          <input id="mi-nombre" type="text" [(ngModel)]="miNombre" />
+        </div>
+        <div class="field">
+          <label for="mi-apellido">Apellido</label>
+          <input id="mi-apellido" type="text" [(ngModel)]="miApellido" />
+        </div>
+        <div class="field">
+          <label for="mi-email">Correo electrónico</label>
+          <input id="mi-email" type="email" [(ngModel)]="miEmail" />
+        </div>
+        <div class="field">
+          <label for="mi-telefono">Teléfono</label>
+          <input id="mi-telefono" type="tel" [(ngModel)]="miTelefono" />
+        </div>
+        <button type="button" class="btn-primary" [disabled]="guardando()" (click)="guardarMiPerfil()">
+          Guardar mis datos
+        </button>
+      </div>
+
+      <div class="content-card">
+        <h3 style="margin-top:0;">Datos del pupilo</h3>
+        @if (pupilos().length > 1) {
+          <div class="field">
+            <label for="pupilo">Pupilo</label>
+            <select id="pupilo" [(ngModel)]="pupiloId" (ngModelChange)="onPupiloChange()">
+              <option [ngValue]="null">Seleccione pupilo…</option>
+              @for (p of pupilos(); track p.alumnoUsuarioId) {
+                <option [ngValue]="p.alumnoUsuarioId">{{ etiquetaPupilo(p) }}</option>
+              }
+            </select>
+          </div>
+        }
+        @if (pupiloId == null) {
+          <p style="color:#64748b;">Seleccione un pupilo para editar sus datos.</p>
+        } @else {
+          <div class="field">
+            <label for="pup-nombre">Nombre</label>
+            <input id="pup-nombre" type="text" [(ngModel)]="pupiloNombre" />
+          </div>
+          <div class="field">
+            <label for="pup-apellido">Apellido</label>
+            <input id="pup-apellido" type="text" [(ngModel)]="pupiloApellido" />
+          </div>
+          <button type="button" class="btn-primary" [disabled]="guardando()" (click)="guardarPupilo()">
+            Guardar datos del pupilo
+          </button>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,59 @@
+<div class="fade-in" style="padding-top: 1rem;">
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon box-light">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Mi Curso</span>
+        <h3>{{ ficha()?.cursoNombre ?? '—' }}</h3>
+        <span class="stat-sub">{{ ficha()?.cursoCodigo ?? '' }}</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon box-light">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Mensajes Nuevos</span>
+        <h3>{{ mensajesNuevos() }}</h3>
+        <span class="stat-sub">DE: DOCENTES</span>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon box-light">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      </div>
+      <div class="stat-info">
+        <span class="stat-label">Asistencia Semanal</span>
+        <h3>{{ asistenciaPct() }}</h3>
+        <span class="stat-sub">{{ asistenciaSub() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-card" style="margin-top: 1.5rem;">
+    <div class="card-header">
+      <h4>Accesos rápidos</h4>
+    </div>
+    @if (cargando()) {
+      <p style="color:#64748b;">Cargando…</p>
+    } @else {
+      <p style="margin-bottom:1rem;color:#64748b;">
+        Bienvenido/a, <strong>{{ nombreCompleto() || 'estudiante' }}</strong>.
+        Aquí puedes consultar tu asistencia, notas y anotaciones de conducta (solo lectura).
+      </p>
+      <div class="quick-links">
+        <a routerLink="/alumno/asistencia" class="btn-primary" style="display:inline-block;text-decoration:none;margin-right:0.5rem;">Ver asistencia</a>
+        <a routerLink="/alumno/calificaciones" class="btn-primary" style="display:inline-block;text-decoration:none;margin-right:0.5rem;">Ver calificaciones</a>
+        <a routerLink="/alumno/anotaciones" class="btn-primary" style="display:inline-block;text-decoration:none;">Ver anotaciones</a>
+      </div>
+    }
+  </div>
+</div>

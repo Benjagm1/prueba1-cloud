@@ -1,0 +1,50 @@
+<div class="view-container fade-in">
+  <div class="page-header">
+    <h2>Asistencia del pupilo</h2>
+    <p>Registro diario del mes en curso</p>
+  </div>
+
+  @if (pupilos().length > 1) {
+    <div class="field" style="margin-bottom:1rem;max-width:320px;">
+      <label for="pupilo">Pupilo</label>
+      <select id="pupilo" [(ngModel)]="pupiloId" (ngModelChange)="onPupiloChange()" style="width:100%;padding:0.5rem;">
+        <option [ngValue]="null">Seleccione pupilo…</option>
+        @for (p of pupilos(); track p.alumnoUsuarioId) {
+          <option [ngValue]="p.alumnoUsuarioId">{{ etiquetaPupilo(p) }}</option>
+        }
+      </select>
+    </div>
+  }
+
+  @if (error()) {
+    <p class="login-error">{{ error() }}</p>
+  }
+  @if (pupiloId == null && !cargando()) {
+    <p style="color:#64748b;">Seleccione un pupilo para ver su asistencia.</p>
+  } @else if (cargando()) {
+    <p>Cargando asistencia…</p>
+  } @else if (registros().length === 0) {
+    <div class="content-card"><p style="color:#64748b;">Sin registros de asistencia este mes.</p></div>
+  } @else {
+    <div class="content-card">
+      <table class="attendance-table">
+        <thead>
+          <tr><th>Fecha</th><th>Asignatura</th><th class="text-center">Estado</th></tr>
+        </thead>
+        <tbody>
+          @for (r of registros(); track r.id + '-' + r.asignaturaId) {
+            <tr>
+              <td>{{ r.fecha | date:'dd/MM/yyyy' }}</td>
+              <td>{{ r.asignaturaNombre || '—' }}</td>
+              <td class="text-center">
+                <span [style.color]="r.presente ? '#059669' : '#dc2626'" style="font-weight:600;">
+                  {{ r.presente ? 'Presente' : 'Ausente' }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

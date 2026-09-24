@@ -1,0 +1,240 @@
+<div class="admin-panel fade-in">
+  <div class="page-header">
+    <h1>Administración escolar</h1>
+    <p>Gestione cuentas, cursos y asignaciones del libro de clases digital.</p>
+  </div>
+
+  @if (err()) {
+    <div class="alert alert-error" role="alert">{{ err() }}</div>
+  }
+  @if (msg()) {
+    <div class="alert alert-ok" role="status">{{ msg() }}</div>
+  }
+
+  <nav class="tabs" aria-label="Secciones de administración">
+    @for (t of tabs; track t.id) {
+      <button
+        type="button"
+        class="tabs__btn"
+        [class.is-active]="tab() === t.id"
+        (click)="selectTab(t.id)"
+      >
+        {{ t.label }}
+      </button>
+    }
+  </nav>
+
+  @if (tab() === 'familia') {
+    <section class="content-card admin-card">
+      <div class="card-header">
+        <div>
+          <h2>Alumno y apoderado (cuentas nuevas)</h2>
+          <p class="card-sub">Crea y vincula al pupilo con su apoderado en un solo paso.</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <app-admin-familia-form
+          [cursos]="cursosMedia()"
+          [saving]="saving()"
+          (submitForm)="provisionarFamilia($event)"
+        />
+      </div>
+    </section>
+  }
+
+  @if (tab() === 'provisionar') {
+    <section class="content-card admin-card">
+      <div class="card-header">
+        <div>
+          <h2>Nueva cuenta de usuario</h2>
+          <p class="card-sub">Alumno nuevo con apoderado existente, o profesor nuevo.</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <app-admin-provision-form
+          [cursos]="cursosMedia()"
+          [cursosProfesor]="cursos()"
+          [asignaturas]="asignaturas()"
+          [apoderados]="apoderados()"
+          [saving]="saving()"
+          (submitForm)="provisionar($event)"
+        />
+      </div>
+    </section>
+  }
+
+  @if (tab() === 'docentes') {
+    <section class="content-card admin-card">
+      <div class="card-header">
+        <div>
+          <h2>Carga docente</h2>
+          <p class="card-sub">Asigne cursos y asignaturas a cada profesor.</p>
+        </div>
+      </div>
+      <div class="card-body">
+        <app-admin-docente-carga
+          [profesores]="profesores()"
+          [cursos]="cursos()"
+          [asignaturas]="asignaturas()"
+          [asignaciones]="asignacionesProfesor()"
+          [saving]="savingAsignacion()"
+          (profesorChange)="onProfesorSeleccionado($event)"
+          (agregarAsignacion)="agregarAsignacionDocente($event)"
+        />
+      </div>
+    </section>
+  }
+
+  @if (tab() === 'usuarios') {
+    <section class="content-card admin-card">
+      <div class="card-header row-between">
+        <div>
+          <h2>Usuarios registrados</h2>
+          <p class="card-sub">{{ usuariosFiltrados().length }} de {{ users().length }} cuentas</p>
+        </div>
+        <button type="button" class="btn-ghost" (click)="loadUsers()" [disabled]="loadingUsers()">
+          Actualizar lista
+        </button>
+      </div>
+      <div class="card-body">
+        <div class="toolbar">
+          <div class="field">
+            <label for="filtroRol">Filtrar por rol</label>
+            <select id="filtroRol" [ngModel]="filtroRol()" (ngModelChange)="filtroRol.set($event)" name="filtroRol">
+              <option value="todos">Todos los roles</option>
+              <option value="alumno">Alumno</option>
+              <option value="apoderado">Apoderado</option>
+              <option value="profesor">Profesor</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="ordenRol">Ordenar por</label>
+            <select id="ordenRol" [ngModel]="ordenPor()" (ngModelChange)="ordenPor.set($event)" name="ordenRol">
+              <option value="rol">Rol, luego apellido</option>
+              <option value="apellido">Apellido</option>
+              <option value="email">Correo</option>
+            </select>
+          </div>
+        </div>
+        @if (usuariosFiltrados().length === 0) {
+          <div class="empty-state">
+            <p>No hay usuarios que coincidan con el filtro.</p>
+          </div>
+        } @else {
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Rol</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (u of usuariosFiltrados(); track u.id) {
+                  <tr>
+                    <td>{{ nombreCompleto(u) }}</td>
+                    <td>{{ u.email }}</td>
+                    <td><span class="badge" [class]="badgeClass(u.tipo)">{{ rolLabel(u.tipo) }}</span></td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  @if (tab() === 'historial') {
+    <section class="content-card admin-card">
+      <div class="card-header row-between">
+        <div>
+          <h2>Historial de actividad</h2>
+          <p class="card-sub">Registro de acciones de usuarios y administración (últimos eventos).</p>
+        </div>
+        <button type="button" class="btn-ghost" (click)="loadAuditoria()" [disabled]="loadingAuditoria()">
+          Actualizar
+        </button>
+      </div>
+      <div class="card-body">
+        @if (auditoria().length === 0) {
+          <div class="empty-state">
+            <p>No hay eventos registrados aún, o no se pudo cargar el historial.</p>
+          </div>
+        } @else {
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Módulo</th>
+                  <th>Acción</th>
+                  <th>Actor</th>
+                  <th>Detalle</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (e of auditoria(); track e.id) {
+                  <tr>
+                    <td class="col-fecha">{{ formatFecha(e.creadoEn) }}</td>
+                    <td>{{ e.modulo }}</td>
+                    <td><span class="badge badge-default">{{ e.accion }}</span></td>
+                    <td>{{ e.actorTipo ?? '—' }} @if (e.actorUsuarioId) { (#{{ e.actorUsuarioId }}) }</td>
+                    <td class="col-detalle">{{ e.detalle ?? '—' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      </div>
+    </section>
+  }
+
+  @if (tab() === 'catalogo') {
+    <div class="grid-catalogo">
+      <section class="content-card admin-card">
+        <div class="card-header">
+          <h2>Enseñanza media (con alumnos demo)</h2>
+          <p class="card-sub">{{ cursosMedia().length }} cursos — inscripción habilitada</p>
+        </div>
+        <div class="card-body">
+          <div class="chip-list">
+            @for (c of cursosMedia(); track c.id) {
+              <span class="chip"><strong>{{ c.codigo }}</strong> — {{ c.nombre }}</span>
+            }
+          </div>
+        </div>
+      </section>
+      <section class="content-card admin-card">
+        <div class="card-header">
+          <h2>Enseñanza básica (catálogo)</h2>
+          <p class="card-sub">{{ cursosBasica().length }} cursos — sin alumnos por ahora</p>
+        </div>
+        <div class="card-body">
+          <p class="hint-block">Los cursos de básica existen en el catálogo pero la aplicación demo solo opera con enseñanza media.</p>
+          <div class="chip-list">
+            @for (c of cursosBasica(); track c.id) {
+              <span class="chip chip-muted"><strong>{{ c.codigo }}</strong> — {{ c.nombre }}</span>
+            }
+          </div>
+        </div>
+      </section>
+      <section class="content-card admin-card">
+        <div class="card-header">
+          <h2>Asignaturas</h2>
+          <p class="card-sub">{{ asignaturas().length }} ramos</p>
+        </div>
+        <div class="card-body">
+          <div class="chip-list">
+            @for (a of asignaturas(); track a.id) {
+              <span class="chip">{{ etiquetaAsignatura(a) }}</span>
+            }
+          </div>
+        </div>
+      </section>
+    </div>
+  }
+</div>
