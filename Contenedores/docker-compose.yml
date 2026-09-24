@@ -8,7 +8,7 @@ x-api-health: &api-health
   interval: 30s
   timeout: 10s
   retries: 5
-  start_period: 90s
+  start_period: 120s
 
 services:
   # 1. Base de datos
@@ -41,7 +41,7 @@ services:
           cpus: "0.25"
           memory: 512M
 
-  # 2. Catálogo: ms-administracion (Puerto interno cerrado al exterior)
+  # 2. Catálogo: ms-administracion
   admin-api:
     build:
       context: ..
@@ -55,6 +55,11 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-postgres}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-Benya120703.}
       INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-dev-internal-token}
+      # Variables para desactivar llamadas al microservicio de auth inexistente
+      APP_DEMO_ENABLED: "false"
+      APP_DATA_SEED_ENABLED: "false"
+      COLEGIO_DATA_INITIALIZER_ENABLED: "false"
+      APP_INITIALIZER_ENABLED: "false"
     depends_on:
       postgres:
         condition: service_healthy
@@ -70,7 +75,7 @@ services:
           cpus: "0.15"
           memory: 256M
 
-  # 3. Principal: ms-academico (Puerto interno cerrado al exterior)
+  # 3. Principal: ms-academico
   academico-api:
     build:
       context: ..
@@ -85,11 +90,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:-Benya120703.}
       INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-dev-internal-token}
       MS_ADMINISTRACION_BASE_URL: http://admin-api:8052
+      APP_DEMO_ENABLED: "false"
+      APP_DATA_SEED_ENABLED: "false"
     depends_on:
       postgres:
         condition: service_healthy
       admin-api:
-        condition: service_healthy
+        condition: service_started
     healthcheck:
       <<: *api-health
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8053/actuator/health | grep -q UP"]
@@ -102,7 +109,7 @@ services:
           cpus: "0.15"
           memory: 256M
 
-  # 4. Backend for Frontend: ms-bff (Único expuesto en puerto 8080)
+  # 4. Backend for Frontend: ms-bff
   ms-bff:
     build:
       context: ..
@@ -119,9 +126,9 @@ services:
       SERVICES_INTERNAL_TOKEN: ${INTERNAL_API_TOKEN:-dev-internal-token}
     depends_on:
       academico-api:
-        condition: service_healthy
+        condition: service_started
       admin-api:
-        condition: service_healthy
+        condition: service_started
     deploy:
       resources:
         limits:
