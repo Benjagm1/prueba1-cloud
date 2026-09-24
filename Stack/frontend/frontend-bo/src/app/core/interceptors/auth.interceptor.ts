@@ -1,31 +1,33 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
+import { fetchAuthSession } from 'aws-amplify/auth';
+import { from, catchError, switchMap, throwError } from 'rxjs';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
-  let headers = req.headers;
-  if (!req.url.startsWith('/auth/login')) {
-    try {
-      const raw = localStorage.getItem('libro_clases_session');
-      if (raw) {
-        const session = JSON.parse(raw) as { token?: string };
-        if (session.token) {
-          headers = headers.set('Authorization', `Bearer ${session.token}`);
-        }
-      }
-    } catch {
-      /* ignore */
-    }
+
+  // Evitar interceptar la ruta de login
+  if (req.url.startsWith('/auth/login') || req.url.includes('/login')) {
+    return next(req);
   }
-  return next(req.clone({ headers })).pipe(
+
+  return from(fetchAuthSession()).pipe(
+    switchMap((session) => {
+      let headers = req.headers;
+      const token = session.tokens?.idToken?.toString();
+
+      if (token) {
+        headers = headers.set('Authorization', `Bearer ${token}`);
+      }
+
+      return next(req.clone({ headers }));
+    }),
     catchError((err: HttpErrorResponse) => {
-      if (err.status === 401 && !req.url.startsWith('/auth/login')) {
-        localStorage.removeItem('libro_clases_session');
+      if (err.status === 401 && !req.url.includes('/login')) {
         void router.navigate(['/login/form']);
       }
       return throwError(() => err);
-    }),
+    })
   );
 };

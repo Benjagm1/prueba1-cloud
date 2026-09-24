@@ -46,9 +46,13 @@ export class LoginForm implements OnInit {
     event?.preventDefault();
     this.error.set('');
     this.loading.set(true);
+
     try {
+      console.log('Iniciando login con:', this.email.trim());
       await this.auth.login(this.email.trim(), this.contrasena);
+
       const tipo = this.auth.user()?.tipo;
+      console.log('Login exitoso. Perfil detectado:', tipo);
 
       if (tipo === 'admin') {
         await this.router.navigate(['/admin']);
@@ -57,17 +61,17 @@ export class LoginForm implements OnInit {
 
       if (this.perfilEsperado === 'profesor' && tipo !== 'profesor') {
         this.error.set('Esta cuenta no corresponde al portal de docentes.');
-        this.auth.logoutSilencioso();
+        void this.auth.logoutSilencioso();
         return;
       }
       if (this.perfilEsperado === 'alumno' && tipo !== 'alumno') {
         this.error.set('Esta cuenta no corresponde al portal de alumnos.');
-        this.auth.logoutSilencioso();
+        void this.auth.logoutSilencioso();
         return;
       }
       if (this.perfilEsperado === 'apoderado' && tipo !== 'apoderado') {
         this.error.set('Esta cuenta no corresponde al portal de apoderados.');
-        this.auth.logoutSilencioso();
+        void this.auth.logoutSilencioso();
         return;
       }
 
@@ -79,10 +83,12 @@ export class LoginForm implements OnInit {
         await this.router.navigate(['/alumno']);
       } else {
         this.error.set('Perfil no reconocido.');
-        this.auth.logoutSilencioso();
+        void this.auth.logoutSilencioso();
       }
-    } catch {
-      this.error.set('No se pudo iniciar sesión. Verifique correo y contraseña.');
+    } catch (err: any) {
+      console.error('ERROR COMPLETO DE COGNITO:', err);
+      const msg = err?.message || err?.name || 'Error desconocido';
+      this.error.set(`Fallo de autenticación: ${msg}`);
     } finally {
       this.loading.set(false);
     }
