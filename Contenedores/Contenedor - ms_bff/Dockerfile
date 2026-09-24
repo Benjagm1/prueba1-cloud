@@ -1,17 +1,22 @@
-# Etapa 1: Build con Maven y JDK 21
-FROM maven:3.9.9-eclipse-temurin-21 AS build
+FROM eclipse-temurin:25-jdk AS builder
+WORKDIR /build
+
+# Copiar el proyecto ms-bff con su propio Maven Wrapper
+COPY Stack/Backend/ms-bff /build
+
+RUN chmod +x ./mvnw
+RUN ./mvnw -q -DskipTests dependency:go-offline
+RUN ./mvnw -q -DskipTests clean package
+
+FROM eclipse-temurin:25-jre
 WORKDIR /app
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && addgroup --system gea && adduser --system --ingroup gea gea
+USER gea
 
-# Copiar únicamente el módulo ms-bff
-COPY Stack/Backend/ms-bff ./
-
-# Descargar dependencias y compilar el JAR de forma independiente
-RUN mvn clean package -DskipTests
-
-# Etapa 2: Runtime ligero
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=builder /build/target/*.jar ./app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java", "-Xmx256m", "-Xms128m", "-jar", "app.jar"]gi
+ENTRYPOINT ["java", "-Xmx256m", "-Xms128m", "-jar", "app.jar"]
